@@ -509,7 +509,12 @@
                         }
                     ]
                 },
-                "SubnetId": "subnet-4a0cfb10"
+                "Tags": [
+                    {
+                            "Key": "Name",
+                            "Value": "k8smaster1"
+                    }
+                ]
             },
             "Metadata": {
                 "AWS::CloudFormation::Designer": {
@@ -548,7 +553,12 @@
                         }
                     ]
                 },
-                "SubnetId": "subnet-4a0cfb10"
+                "Tags": [
+                    {
+                            "Key": "Name",
+                            "Value": "k8sworker1"
+                    }
+                ]
             }
         },
         "InstanceSecurityGroup": {
