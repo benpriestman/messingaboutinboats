@@ -1,673 +1,181 @@
 {
-    "AWSTemplateFormatVersion": "2010-09-09",
-    "Description": "A basic template for testing bootstrapping k8s",
+"AWSTemplateFormatVersion": "2010-09-09",
+    "Description": "k8s testing",
+    "Metadata": {
+
+    },
     "Parameters": {
-        "KeyName": {
-            "Description": "Name of an existing EC2 KeyPair to enable SSH access to the instance",
-            "Type": "AWS::EC2::KeyPair::KeyName",
-            "ConstraintDescription": "must be the name of an existing EC2 KeyPair."
-        },
-        "InstanceType": {
-            "Description": "WebServer EC2 instance type",
+        
+        "keyName": {
+            "Description": "SSH Key name",
             "Type": "String",
-            "Default": "t2.small",
-            "AllowedValues": [
-                "t1.micro",
-                "t2.nano",
-                "t2.micro",
-                "t2.small",
-                "t2.medium",
-                "t2.large",
-                "m1.small",
-                "m1.medium",
-                "m1.large",
-                "m1.xlarge",
-                "m2.xlarge",
-                "m2.2xlarge",
-                "m2.4xlarge",
-                "m3.medium",
-                "m3.large",
-                "m3.xlarge",
-                "m3.2xlarge",
-                "m4.large",
-                "m4.xlarge",
-                "m4.2xlarge",
-                "m4.4xlarge",
-                "m4.10xlarge",
-                "c1.medium",
-                "c1.xlarge",
-                "c3.large",
-                "c3.xlarge",
-                "c3.2xlarge",
-                "c3.4xlarge",
-                "c3.8xlarge",
-                "c4.large",
-                "c4.xlarge",
-                "c4.2xlarge",
-                "c4.4xlarge",
-                "c4.8xlarge",
-                "g2.2xlarge",
-                "g2.8xlarge",
-                "r3.large",
-                "r3.xlarge",
-                "r3.2xlarge",
-                "r3.4xlarge",
-                "r3.8xlarge",
-                "i2.xlarge",
-                "i2.2xlarge",
-                "i2.4xlarge",
-                "i2.8xlarge",
-                "d2.xlarge",
-                "d2.2xlarge",
-                "d2.4xlarge",
-                "d2.8xlarge",
-                "hi1.4xlarge",
-                "hs1.8xlarge",
-                "cr1.8xlarge",
-                "cc2.8xlarge",
-                "cg1.4xlarge"
-            ],
-            "ConstraintDescription": "must be a valid EC2 instance type."
+            "Default": "ben@SFLaptop - eu-west-1"
         },
-        "SSHLocation": {
-            "Description": "The IP address range that can be used to SSH to the EC2 instances",
+        
+        "imageId": {
+            "Description": "AMI",
             "Type": "String",
-            "MinLength": "9",
-            "MaxLength": "18",
-            "Default": "0.0.0.0/0",
-            "AllowedPattern": "(\\d{1,3})\\.(\\d{1,3})\\.(\\d{1,3})\\.(\\d{1,3})/(\\d{1,2})",
-            "ConstraintDescription": "must be a valid IP CIDR range of the form x.x.x.x/x."
+            "Default": "ami-3548444c"
+        },
+
+        
+        "masterSize": {
+            "Description": "Size of instance for masters",
+            "Type": "String",
+            "Default": "t3.medium"
         }
+        
+        
+        
     },
     "Mappings": {
-        "AWSInstanceType2Arch": {
-            "t1.micro": {
-                "Arch": "HVM64"
-            },
-            "t2.nano": {
-                "Arch": "HVM64"
-            },
-            "t2.micro": {
-                "Arch": "HVM64"
-            },
-            "t2.small": {
-                "Arch": "HVM64"
-            },
-            "t2.medium": {
-                "Arch": "HVM64"
-            },
-            "t2.large": {
-                "Arch": "HVM64"
-            },
-            "m1.small": {
-                "Arch": "HVM64"
-            },
-            "m1.medium": {
-                "Arch": "HVM64"
-            },
-            "m1.large": {
-                "Arch": "HVM64"
-            },
-            "m1.xlarge": {
-                "Arch": "HVM64"
-            },
-            "m2.xlarge": {
-                "Arch": "HVM64"
-            },
-            "m2.2xlarge": {
-                "Arch": "HVM64"
-            },
-            "m2.4xlarge": {
-                "Arch": "HVM64"
-            },
-            "m3.medium": {
-                "Arch": "HVM64"
-            },
-            "m3.large": {
-                "Arch": "HVM64"
-            },
-            "m3.xlarge": {
-                "Arch": "HVM64"
-            },
-            "m3.2xlarge": {
-                "Arch": "HVM64"
-            },
-            "m4.large": {
-                "Arch": "HVM64"
-            },
-            "m4.xlarge": {
-                "Arch": "HVM64"
-            },
-            "m4.2xlarge": {
-                "Arch": "HVM64"
-            },
-            "m4.4xlarge": {
-                "Arch": "HVM64"
-            },
-            "m4.10xlarge": {
-                "Arch": "HVM64"
-            },
-            "c1.medium": {
-                "Arch": "HVM64"
-            },
-            "c1.xlarge": {
-                "Arch": "HVM64"
-            },
-            "c3.large": {
-                "Arch": "HVM64"
-            },
-            "c3.xlarge": {
-                "Arch": "HVM64"
-            },
-            "c3.2xlarge": {
-                "Arch": "HVM64"
-            },
-            "c3.4xlarge": {
-                "Arch": "HVM64"
-            },
-            "c3.8xlarge": {
-                "Arch": "HVM64"
-            },
-            "c4.large": {
-                "Arch": "HVM64"
-            },
-            "c4.xlarge": {
-                "Arch": "HVM64"
-            },
-            "c4.2xlarge": {
-                "Arch": "HVM64"
-            },
-            "c4.4xlarge": {
-                "Arch": "HVM64"
-            },
-            "c4.8xlarge": {
-                "Arch": "HVM64"
-            },
-            "g2.2xlarge": {
-                "Arch": "HVMG2"
-            },
-            "g2.8xlarge": {
-                "Arch": "HVMG2"
-            },
-            "r3.large": {
-                "Arch": "HVM64"
-            },
-            "r3.xlarge": {
-                "Arch": "HVM64"
-            },
-            "r3.2xlarge": {
-                "Arch": "HVM64"
-            },
-            "r3.4xlarge": {
-                "Arch": "HVM64"
-            },
-            "r3.8xlarge": {
-                "Arch": "HVM64"
-            },
-            "i2.xlarge": {
-                "Arch": "HVM64"
-            },
-            "i2.2xlarge": {
-                "Arch": "HVM64"
-            },
-            "i2.4xlarge": {
-                "Arch": "HVM64"
-            },
-            "i2.8xlarge": {
-                "Arch": "HVM64"
-            },
-            "d2.xlarge": {
-                "Arch": "HVM64"
-            },
-            "d2.2xlarge": {
-                "Arch": "HVM64"
-            },
-            "d2.4xlarge": {
-                "Arch": "HVM64"
-            },
-            "d2.8xlarge": {
-                "Arch": "HVM64"
-            },
-            "hi1.4xlarge": {
-                "Arch": "HVM64"
-            },
-            "hs1.8xlarge": {
-                "Arch": "HVM64"
-            },
-            "cr1.8xlarge": {
-                "Arch": "HVM64"
-            },
-            "cc2.8xlarge": {
-                "Arch": "HVM64"
-            }
-        },
-        "AWSInstanceType2NATArch": {
-            "t1.micro": {
-                "Arch": "NATHVM64"
-            },
-            "t2.nano": {
-                "Arch": "NATHVM64"
-            },
-            "t2.micro": {
-                "Arch": "NATHVM64"
-            },
-            "t2.small": {
-                "Arch": "NATHVM64"
-            },
-            "t2.medium": {
-                "Arch": "NATHVM64"
-            },
-            "t2.large": {
-                "Arch": "NATHVM64"
-            },
-            "m1.small": {
-                "Arch": "NATHVM64"
-            },
-            "m1.medium": {
-                "Arch": "NATHVM64"
-            },
-            "m1.large": {
-                "Arch": "NATHVM64"
-            },
-            "m1.xlarge": {
-                "Arch": "NATHVM64"
-            },
-            "m2.xlarge": {
-                "Arch": "NATHVM64"
-            },
-            "m2.2xlarge": {
-                "Arch": "NATHVM64"
-            },
-            "m2.4xlarge": {
-                "Arch": "NATHVM64"
-            },
-            "m3.medium": {
-                "Arch": "NATHVM64"
-            },
-            "m3.large": {
-                "Arch": "NATHVM64"
-            },
-            "m3.xlarge": {
-                "Arch": "NATHVM64"
-            },
-            "m3.2xlarge": {
-                "Arch": "NATHVM64"
-            },
-            "m4.large": {
-                "Arch": "NATHVM64"
-            },
-            "m4.xlarge": {
-                "Arch": "NATHVM64"
-            },
-            "m4.2xlarge": {
-                "Arch": "NATHVM64"
-            },
-            "m4.4xlarge": {
-                "Arch": "NATHVM64"
-            },
-            "m4.10xlarge": {
-                "Arch": "NATHVM64"
-            },
-            "c1.medium": {
-                "Arch": "NATHVM64"
-            },
-            "c1.xlarge": {
-                "Arch": "NATHVM64"
-            },
-            "c3.large": {
-                "Arch": "NATHVM64"
-            },
-            "c3.xlarge": {
-                "Arch": "NATHVM64"
-            },
-            "c3.2xlarge": {
-                "Arch": "NATHVM64"
-            },
-            "c3.4xlarge": {
-                "Arch": "NATHVM64"
-            },
-            "c3.8xlarge": {
-                "Arch": "NATHVM64"
-            },
-            "c4.large": {
-                "Arch": "NATHVM64"
-            },
-            "c4.xlarge": {
-                "Arch": "NATHVM64"
-            },
-            "c4.2xlarge": {
-                "Arch": "NATHVM64"
-            },
-            "c4.4xlarge": {
-                "Arch": "NATHVM64"
-            },
-            "c4.8xlarge": {
-                "Arch": "NATHVM64"
-            },
-            "g2.2xlarge": {
-                "Arch": "NATHVMG2"
-            },
-            "g2.8xlarge": {
-                "Arch": "NATHVMG2"
-            },
-            "r3.large": {
-                "Arch": "NATHVM64"
-            },
-            "r3.xlarge": {
-                "Arch": "NATHVM64"
-            },
-            "r3.2xlarge": {
-                "Arch": "NATHVM64"
-            },
-            "r3.4xlarge": {
-                "Arch": "NATHVM64"
-            },
-            "r3.8xlarge": {
-                "Arch": "NATHVM64"
-            },
-            "i2.xlarge": {
-                "Arch": "NATHVM64"
-            },
-            "i2.2xlarge": {
-                "Arch": "NATHVM64"
-            },
-            "i2.4xlarge": {
-                "Arch": "NATHVM64"
-            },
-            "i2.8xlarge": {
-                "Arch": "NATHVM64"
-            },
-            "d2.xlarge": {
-                "Arch": "NATHVM64"
-            },
-            "d2.2xlarge": {
-                "Arch": "NATHVM64"
-            },
-            "d2.4xlarge": {
-                "Arch": "NATHVM64"
-            },
-            "d2.8xlarge": {
-                "Arch": "NATHVM64"
-            },
-            "hi1.4xlarge": {
-                "Arch": "NATHVM64"
-            },
-            "hs1.8xlarge": {
-                "Arch": "NATHVM64"
-            },
-            "cr1.8xlarge": {
-                "Arch": "NATHVM64"
-            },
-            "cc2.8xlarge": {
-                "Arch": "NATHVM64"
-            }
-        },
-        "AWSRegionArch2AMI": {
-            "eu-west-1": {
-                "HVM64": "ami-047bb4163c506cd98",
-                "HVMG2": "ami-0a7c483d527806435"
-            },
-            "eu-west-2": {
-                "HVM64": "ami-f976839e",
-                "HVMG2": "NOT_SUPPORTED"
-            },
-            "eu-west-3": {
-                "HVM64": "ami-0ebc281c20e89ba4b",
-                "HVMG2": "NOT_SUPPORTED"
-            },
-            "eu-central-1": {
-                "HVM64": "ami-0233214e13e500f77",
-                "HVMG2": "ami-06223d46a6d0661c7"
-            },
-            "ap-northeast-1": {
-                "HVM64": "ami-06cd52961ce9f0d85",
-                "HVMG2": "ami-053cdd503598e4a9d"
-            },
-            "ap-northeast-2": {
-                "HVM64": "ami-0a10b2721688ce9d2",
-                "HVMG2": "NOT_SUPPORTED"
-            },
-            "ap-northeast-3": {
-                "HVM64": "ami-0d98120a9fb693f07",
-                "HVMG2": "NOT_SUPPORTED"
-            },
-            "ap-southeast-1": {
-                "HVM64": "ami-08569b978cc4dfa10",
-                "HVMG2": "ami-0be9df32ae9f92309"
-            },
-            "ap-southeast-2": {
-                "HVM64": "ami-09b42976632b27e9b",
-                "HVMG2": "ami-0a9ce9fecc3d1daf8"
-            },
-            "ap-south-1": {
-                "HVM64": "ami-0912f71e06545ad88",
-                "HVMG2": "ami-097b15e89dbdcfcf4"
-            },
-            "us-east-2": {
-                "HVM64": "ami-0b59bfac6be064b78",
-                "HVMG2": "NOT_SUPPORTED"
-            },
-            "ca-central-1": {
-                "HVM64": "ami-0b18956f",
-                "HVMG2": "NOT_SUPPORTED"
-            },
-            "sa-east-1": {
-                "HVM64": "ami-07b14488da8ea02a0",
-                "HVMG2": "NOT_SUPPORTED"
-            },
-            "cn-north-1": {
-                "HVM64": "ami-0a4eaf6c4454eda75",
-                "HVMG2": "NOT_SUPPORTED"
-            },
-            "cn-northwest-1": {
-                "HVM64": "ami-6b6a7d09",
-                "HVMG2": "NOT_SUPPORTED"
-            }
-        }
+
+    },
+    "Conditions": {
+
     },
     "Resources": {
-        "k8smaster1": {
-            "Type": "AWS::EC2::Instance",
-            "Properties": {
-                "InstanceType": {
-                    "Ref": "InstanceType"
-                },
-                "SecurityGroups": [
-                    {
-                        "Ref": "InstanceSecurityGroup"
-                    }
-                ],
-                "KeyName": {
-                    "Ref": "KeyName"
-                },
-                "ImageId": {
-                    "Fn::FindInMap": [
-                        "AWSRegionArch2AMI",
-                        {
-                            "Ref": "AWS::Region"
-                        },
-                        {
-                            "Fn::FindInMap": [
-                                "AWSInstanceType2Arch",
-                                {
-                                    "Ref": "InstanceType"
-                                },
-                                "Arch"
-                            ]
-                        }
-                    ]
-                },
+            "vpck8s": {
+              "Type": "AWS::EC2::VPC",
+              "Properties": {
+                "CidrBlock": "172.20.0.0/16",
+                "EnableDnsSupport": true,
+                "EnableDnsHostnames": true,
                 "Tags": [
                     {
-                            "Key": "Name",
-                            "Value": "k8smaster1"
+                        "Key": "Purpose",
+                        "Value": "k8s testing"
                     }
                 ]
+              }
             },
-            "Metadata": {
-                "AWS::CloudFormation::Designer": {
-                    "id": "10fdbb76-3e2a-4003-b6f4-fa8d7d710b80"
-                }
-            }
-        },
-        "k8sworker1": {
-            "Type": "AWS::EC2::Instance",
-            "Properties": {
-                "InstanceType": {
-                    "Ref": "InstanceType"
-                },
-                "SecurityGroups": [
-                    {
-                        "Ref": "InstanceSecurityGroup"
-                    }
-                ],
-                "KeyName": {
-                    "Ref": "KeyName"
-                },
-                "ImageId": {
-                    "Fn::FindInMap": [
-                        "AWSRegionArch2AMI",
-                        {
-                            "Ref": "AWS::Region"
-                        },
-                        {
-                            "Fn::FindInMap": [
-                                "AWSInstanceType2Arch",
-                                {
-                                    "Ref": "InstanceType"
-                                },
-                                "Arch"
-                            ]
-                        }
-                    ]
-                },
+
+            
+            "igwk8s": {
+              "Type": "AWS::EC2::InternetGateway",
+              "Properties": {
                 "Tags": [
                     {
-                            "Key": "Name",
-                            "Value": "k8sworker1"
+                        "Key": "Purpose",
+                        "Value": "k8s testing"
                     }
                 ]
-            }
-        },
-        "InstanceSecurityGroup": {
-            "Type": "AWS::EC2::SecurityGroup",
-            "Properties": {
-                "GroupDescription": "Enable SSH access via port 22",
-                "SecurityGroupIngress": [
+              }
+            },
+            "gwak8s": {
+              "Type": "AWS::EC2::VPCGatewayAttachment",
+              "Properties": {
+                "VpcId": { "Ref": "vpck8s" },
+                "InternetGatewayId": { "Ref": "igwk8s" }
+              }
+            },
+            
+            
+            "subnetk8s1": {
+              "Type": "AWS::EC2::Subnet",
+              "Properties": {
+                "AvailabilityZone": "eu-west-1a",
+                "VpcId": { "Ref": "vpck8s" },                
+                "CidrBlock": "172.20.0.0/24",
+                "MapPublicIpOnLaunch": "true",
+                "Tags":[
+                    { "Key": "Purpose", "Value":  "k8s testing" }
+                ]
+              }
+            },
+            "rtvpck8s": {
+              "Type": "AWS::EC2::RouteTable",
+              "Properties": {
+                "VpcId": { "Ref": "vpck8s"},
+                "Tags":[
+                    { "Key": "Purpose", "Value":  "k8s testing" }
+                ]
+              }
+            },
+            
+            "routeTableAssocName": {
+              "Type": "AWS::EC2::SubnetRouteTableAssociation",
+              "Properties": {
+                "SubnetId": 
+                { "Ref": "subnetk8s1" }
+                ,
+                "RouteTableId": 
+                { "Ref": "rtvpck8s" }
+                
+              }
+            },
+            
+            "rtk8sdefault": {
+              "Type": "AWS::EC2::Route",
+              "Properties": {
+                "RouteTableId": { "Ref": "rtvpck8s" },
+                "DestinationCidrBlock": "0.0.0.0/0",
+                "GatewayId": { "Ref": "igwk8s" }
+              }
+            },
+            
+            
+            
+            "sgk8smasters" : {
+              "Type" : "AWS::EC2::SecurityGroup",
+              "Properties" : {
+                "GroupDescription" : "SG for k8s masters",
+                "SecurityGroupIngress" : [ 
                     {
-                        "IpProtocol": "tcp",
-                        "FromPort": "22",
-                        "ToPort": "22",
-                        "CidrIp": {
-                            "Ref": "SSHLocation"
+                        "CidrIp" : "0.0.0.0/0",
+                        "Description" : "Allow anyone to shell in!",
+                        "IpProtocol" : "tcp",
+                        "FromPort" : "22",
+                        "ToPort" : "22"
+                      }
+                ],
+                "VpcId" : { "Ref": "vpck8s" },
+                "Tags":[
+                    { "Key": "Purpose", "Value":  "k8s testing" }
+                ]
+              }
+            },
+            
+            
+            "ec2k8smaster1": {
+                "Type": "AWS::EC2::Instance",
+                "Properties": {
+                    "KeyName": { "Ref": "keyName" },
+                    "ImageId": { "Ref": "imageId" },
+                    "InstanceType": { "Ref": "masterSize" },
+                    "Monitoring": "true",
+                    "SubnetId": { "Ref": "subnetk8s1" },                    
+                    "SecurityGroupIds" : [
+                        
+                        { "Ref": "sgk8smasters" }
+                        
+                    ],
+                    "Tags":[
+                        { "Key": "Purpose", "Value":  "k8s testing" }
+                    ],
+                    "UserData": {
+                        "Fn::Base64": {
+                            "Fn::Join": [
+                                "",
+                                [
+                                    "#!/bin/bash -ex",
+                                    "-"
+                                ]
+                            ]
                         }
                     }
-                ]
-            },
-            "Metadata": {
-                "AWS::CloudFormation::Designer": {
-                    "id": "4cfd635b-98d6-4294-aa54-c334e815184f"
                 }
             }
-        }
+            
+
     },
     "Outputs": {
-        "k8sMasterInstanceId": {
-            "Description": "InstanceId of the newly created k8s master",
-            "Value": {
-                "Ref": "k8smaster1"
-            }
-        },
-        "k8smasterAZ": {
-            "Description": "Availability Zone of the newly created k8s master",
-            "Value": {
-                "Fn::GetAtt": [
-                    "k8smaster1",
-                    "AvailabilityZone"
-                ]
-            }
-        },
-        "k8sMasterPublicDNS": {
-            "Description": "Public DNSName of the newly created k8s master",
-            "Value": {
-                "Fn::GetAtt": [
-                    "k8smaster1",
-                    "PublicDnsName"
-                ]
-            }
-        },
-        "k8sMasterPublicIP": {
-            "Description": "Public IP address of the newly created k8s master",
-            "Value": {
-                "Fn::GetAtt": [
-                    "k8smaster1",
-                    "PublicIp"
-                ]
-            }
-        },
-        "k8sWorkerInstanceId": {
-            "Description": "InstanceId of the newly created k8s worker",
-            "Value": {
-                "Ref": "k8sworker1"
-            }
-        },
-        "k8sworkerAZ": {
-            "Description": "Availability Zone of the newly created k8s worker",
-            "Value": {
-                "Fn::GetAtt": [
-                    "k8sworker1",
-                    "AvailabilityZone"
-                ]
-            }
-        },
-        "k8sWorkerPublicDNS": {
-            "Description": "Public DNSName of the newly created k8s worker",
-            "Value": {
-                "Fn::GetAtt": [
-                    "k8sworker1",
-                    "PublicDnsName"
-                ]
-            }
-        },
-        "k8sWorkerPublicIP": {
-            "Description": "Public IP address of the newly created k8s worker",
-            "Value": {
-                "Fn::GetAtt": [
-                    "k8sworker1",
-                    "PublicIp"
-                ]
-            }
+
+        
+        "k8smasterDNS" : {
+          "Value" : { "Fn::GetAtt" : [ "ec2k8smaster1", "PublicDnsName" ] }
         }
-    },
-    "Metadata": {
-        "AWS::CloudFormation::Designer": {
-            "4cfd635b-98d6-4294-aa54-c334e815184f": {
-                "size": {
-                    "width": 60,
-                    "height": 60
-                },
-                "position": {
-                    "x": 60,
-                    "y": 90
-                },
-                "z": 1,
-                "embeds": []
-            },
-            "10fdbb76-3e2a-4003-b6f4-fa8d7d710b80": {
-                "size": {
-                    "width": 60,
-                    "height": 60
-                },
-                "position": {
-                    "x": 290,
-                    "y": 90
-                },
-                "z": 1,
-                "embeds": [],
-                "isassociatedwith": [
-                    "4cfd635b-98d6-4294-aa54-c334e815184f"
-                ]
-            }
-        }
+        
+
     }
 }
