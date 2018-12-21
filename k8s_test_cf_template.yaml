@@ -150,442 +150,6 @@ Parameters:
 
     ConstraintDescription: must be a valid IP CIDR range of the form x.x.x.x/x.
 
-Mappings:
-
-  AWSInstanceType2Arch:
-
-    t1.micro:
-
-      Arch: HVM64
-
-    t2.nano:
-
-      Arch: HVM64
-
-    t2.micro:
-
-      Arch: HVM64
-
-    t2.small:
-
-      Arch: HVM64
-
-    t2.medium:
-
-      Arch: HVM64
-
-    t2.large:
-
-      Arch: HVM64
-
-    m1.small:
-
-      Arch: HVM64
-
-    m1.medium:
-
-      Arch: HVM64
-
-    m1.large:
-
-      Arch: HVM64
-
-    m1.xlarge:
-
-      Arch: HVM64
-
-    m2.xlarge:
-
-      Arch: HVM64
-
-    m2.2xlarge:
-
-      Arch: HVM64
-
-    m2.4xlarge:
-
-      Arch: HVM64
-
-    m3.medium:
-
-      Arch: HVM64
-
-    m3.large:
-
-      Arch: HVM64
-
-    m3.xlarge:
-
-      Arch: HVM64
-
-    m3.2xlarge:
-
-      Arch: HVM64
-
-    m4.large:
-
-      Arch: HVM64
-
-    m4.xlarge:
-
-      Arch: HVM64
-
-    m4.2xlarge:
-
-      Arch: HVM64
-
-    m4.4xlarge:
-
-      Arch: HVM64
-
-    m4.10xlarge:
-
-      Arch: HVM64
-
-    c1.medium:
-
-      Arch: HVM64
-
-    c1.xlarge:
-
-      Arch: HVM64
-
-    c3.large:
-
-      Arch: HVM64
-
-    c3.xlarge:
-
-      Arch: HVM64
-
-    c3.2xlarge:
-
-      Arch: HVM64
-
-    c3.4xlarge:
-
-      Arch: HVM64
-
-    c3.8xlarge:
-
-      Arch: HVM64
-
-    c4.large:
-
-      Arch: HVM64
-
-    c4.xlarge:
-
-      Arch: HVM64
-
-    c4.2xlarge:
-
-      Arch: HVM64
-
-    c4.4xlarge:
-
-      Arch: HVM64
-
-    c4.8xlarge:
-
-      Arch: HVM64
-
-    g2.2xlarge:
-
-      Arch: HVMG2
-
-    g2.8xlarge:
-
-      Arch: HVMG2
-
-    r3.large:
-
-      Arch: HVM64
-
-    r3.xlarge:
-
-      Arch: HVM64
-
-    r3.2xlarge:
-
-      Arch: HVM64
-
-    r3.4xlarge:
-
-      Arch: HVM64
-
-    r3.8xlarge:
-
-      Arch: HVM64
-
-    i2.xlarge:
-
-      Arch: HVM64
-
-    i2.2xlarge:
-
-      Arch: HVM64
-
-    i2.4xlarge:
-
-      Arch: HVM64
-
-    i2.8xlarge:
-
-      Arch: HVM64
-
-    d2.xlarge:
-
-      Arch: HVM64
-
-    d2.2xlarge:
-
-      Arch: HVM64
-
-    d2.4xlarge:
-
-      Arch: HVM64
-
-    d2.8xlarge:
-
-      Arch: HVM64
-
-    hi1.4xlarge:
-
-      Arch: HVM64
-
-    hs1.8xlarge:
-
-      Arch: HVM64
-
-    cr1.8xlarge:
-
-      Arch: HVM64
-
-    cc2.8xlarge:
-
-      Arch: HVM64
-
-  AWSInstanceType2NATArch:
-
-    t1.micro:
-
-      Arch: NATHVM64
-
-    t2.nano:
-
-      Arch: NATHVM64
-
-    t2.micro:
-
-      Arch: NATHVM64
-
-    t2.small:
-
-      Arch: NATHVM64
-
-    t2.medium:
-
-      Arch: NATHVM64
-
-    t2.large:
-
-      Arch: NATHVM64
-
-    m1.small:
-
-      Arch: NATHVM64
-
-    m1.medium:
-
-      Arch: NATHVM64
-
-    m1.large:
-
-      Arch: NATHVM64
-
-    m1.xlarge:
-
-      Arch: NATHVM64
-
-    m2.xlarge:
-
-      Arch: NATHVM64
-
-    m2.2xlarge:
-
-      Arch: NATHVM64
-
-    m2.4xlarge:
-
-      Arch: NATHVM64
-
-    m3.medium:
-
-      Arch: NATHVM64
-
-    m3.large:
-
-      Arch: NATHVM64
-
-    m3.xlarge:
-
-      Arch: NATHVM64
-
-    m3.2xlarge:
-
-      Arch: NATHVM64
-
-    m4.large:
-
-      Arch: NATHVM64
-
-    m4.xlarge:
-
-      Arch: NATHVM64
-
-    m4.2xlarge:
-
-      Arch: NATHVM64
-
-    m4.4xlarge:
-
-      Arch: NATHVM64
-
-    m4.10xlarge:
-
-      Arch: NATHVM64
-
-    c1.medium:
-
-      Arch: NATHVM64
-
-    c1.xlarge:
-
-      Arch: NATHVM64
-
-    c3.large:
-
-      Arch: NATHVM64
-
-    c3.xlarge:
-
-      Arch: NATHVM64
-
-    c3.2xlarge:
-
-      Arch: NATHVM64
-
-    c3.4xlarge:
-
-      Arch: NATHVM64
-
-    c3.8xlarge:
-
-      Arch: NATHVM64
-
-    c4.large:
-
-      Arch: NATHVM64
-
-    c4.xlarge:
-
-      Arch: NATHVM64
-
-    c4.2xlarge:
-
-      Arch: NATHVM64
-
-    c4.4xlarge:
-
-      Arch: NATHVM64
-
-    c4.8xlarge:
-
-      Arch: NATHVM64
-
-    g2.2xlarge:
-
-      Arch: NATHVMG2
-
-    g2.8xlarge:
-
-      Arch: NATHVMG2
-
-    r3.large:
-
-      Arch: NATHVM64
-
-    r3.xlarge:
-
-      Arch: NATHVM64
-
-    r3.2xlarge:
-
-      Arch: NATHVM64
-
-    r3.4xlarge:
-
-      Arch: NATHVM64
-
-    r3.8xlarge:
-
-      Arch: NATHVM64
-
-    i2.xlarge:
-
-      Arch: NATHVM64
-
-    i2.2xlarge:
-
-      Arch: NATHVM64
-
-    i2.4xlarge:
-
-      Arch: NATHVM64
-
-    i2.8xlarge:
-
-      Arch: NATHVM64
-
-    d2.xlarge:
-
-      Arch: NATHVM64
-
-    d2.2xlarge:
-
-      Arch: NATHVM64
-
-    d2.4xlarge:
-
-      Arch: NATHVM64
-
-    d2.8xlarge:
-
-      Arch: NATHVM64
-
-    hi1.4xlarge:
-
-      Arch: NATHVM64
-
-    hs1.8xlarge:
-
-      Arch: NATHVM64
-
-    cr1.8xlarge:
-
-      Arch: NATHVM64
-
-    cc2.8xlarge:
-
-      Arch: NATHVM64
-
-  AWSRegionArch2AMI:
-
-    eu-west-1:
-
-      HVM64: ami-08935252a36e25f85
-
 Resources:
 
   k8smaster1:
@@ -602,19 +166,25 @@ Resources:
 
       KeyName: !Ref KeyName
 
-      ImageId: !FindInMap 
+      ImageId: ami-3548444c
+      Tags:
+        - Key: Name
+          Value: k8sworker1
+      UserData:
+        Fn::Base64: |
+          #!/bin/bash
+          cat <<EOF > /etc/yum.repos.d/kubernetes.repo
+          [kubernetes]
+          name=Kubernetes
+          baseurl=https://packages.cloud.google.com/yum/repos/kubernetes-el7-x86_64
+          enabled=1
+          gpgcheck=1
+          repo_gpgcheck=1
+          gpgkey=https://packages.cloud.google.com/yum/doc/yum-key.gpg https://packages.cloud.google.com/yum/doc/rpm-package-key.gpg
+          exclude=kube*
+          EOF
+          yum install -y kubelet kubeadm kubectl --disableexcludes=kubernetes
 
-        - AWSRegionArch2AMI
-
-        - !Ref 'AWS::Region'
-
-        - !FindInMap 
-
-          - AWSInstanceType2Arch
-
-          - !Ref InstanceType
-
-          - Arch
 
     Metadata:
 
@@ -636,19 +206,25 @@ Resources:
 
       KeyName: !Ref KeyName
 
-      ImageId: !FindInMap 
-
-        - AWSRegionArch2AMI
-
-        - !Ref 'AWS::Region'
-
-        - !FindInMap 
-
-          - AWSInstanceType2Arch
-
-          - !Ref InstanceType
-
-          - Arch
+      ImageId: ami-3548444c
+      
+      Tags:
+        - Key: Name
+          Value: k8sworker1
+      UserData: 
+        Fn::Base64: |
+          #!/bin/bash
+          cat <<EOF > /etc/yum.repos.d/kubernetes.repo
+          [kubernetes]
+          name=Kubernetes
+          baseurl=https://packages.cloud.google.com/yum/repos/kubernetes-el7-x86_64
+          enabled=1
+          gpgcheck=1
+          repo_gpgcheck=1
+          gpgkey=https://packages.cloud.google.com/yum/doc/yum-key.gpg https://packages.cloud.google.com/yum/doc/rpm-package-key.gpg
+          exclude=kube*
+          EOF
+          yum install -y kubelet kubeadm kubectl --disableexcludes=kubernetes
 
   InstanceSecurityGroup:
 
