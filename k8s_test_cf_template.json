@@ -96,12 +96,8 @@
             "routeTableAssocName": {
               "Type": "AWS::EC2::SubnetRouteTableAssociation",
               "Properties": {
-                "SubnetId": 
-                { "Ref": "subnetk8s1" }
-                ,
-                "RouteTableId": 
-                { "Ref": "rtvpck8s" }
-                
+                "SubnetId": { "Ref": "subnetk8s1" },
+                "RouteTableId": { "Ref": "rtvpck8s" }               
               }
             },
             
