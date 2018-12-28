@@ -23,6 +23,18 @@
             "Description": "Size of instance for masters",
             "Type": "String",
             "Default": "t3.medium"
+        },
+
+        "apiDnsHostName": {
+            "Description": "hostname for api endpoint",
+            "Type": "String",
+            "Default": "k8sapi"
+        },
+
+        "apiDnsDomainName": {
+            "Description": "Zone for api endpoint",
+            "Type": "String",
+            "Default": "test.sf.rudemechanical.co.uk"
         }
         
     },
@@ -178,13 +190,47 @@
                                     "yum install -y docker kubelet kubeadm kubectl --disableexcludes=kubernetes",
                                     "",
                                     "systemctl enable docker && systemctl start docker",
-                                    "systemctl enable kubelet && systemctl start kubelet"
+                                    "systemctl enable kubelet && systemctl start kubelet",
+                                    "",
+                                    "cat <<EOF >  /etc/sysctl.d/k8s.conf",
+                                    "net.bridge.bridge-nf-call-ip6tables = 1",
+                                    "net.bridge.bridge-nf-call-iptables = 1",
+                                    "EOF",
+                                    "sysctl --system",
+                                    "",
+                                    "kubeadm init\\",
+                                    { "Fn::Sub": "  --apiserver-cert-extra-sans ${apiDnsHostName}.${apiDnsDomainName}"},
+                                    "mkdir -p /home/centos/.kube",
+                                    {
+                                        "Fn::Sub":
+                                            "sed -E 's#(server: [a-z]+://)[^:]+(:[0-9]+)#\\1${apiDnsHostName}.${apiDnsDomainName}\\2#' /etc/kubernetes/admin.conf > /home/centos/.kube/config"
+                                    },
+                                    "chown -R centos:centos /home/centos/.kube/config"
                                 ]
                             ]
                         }
                     }
                 }
+            },
+
+            
+            "r53k8sapi": {
+                "Type": "AWS::Route53::RecordSet",
+                "Properties": {
+                    "Name": {
+                        "Fn::Sub": "${apiDnsHostName}.${apiDnsDomainName}"
+                    },
+                    "Type": "CNAME",
+                    "HostedZoneName": {
+                        "Fn::Sub": "${apiDnsDomainName}."
+                    },
+                    "ResourceRecords": [ {
+                        "Fn::GetAtt" : ["ec2k8smaster1", "PublicDnsName"]
+                    } ],
+                    "TTL": "60"
+                }
             }
+            
             
 
     },
@@ -193,6 +239,11 @@
         
         "k8smasterDNS" : {
           "Value" : { "Fn::GetAtt" : [ "ec2k8smaster1", "PublicDnsName" ] }
+        },
+        "k8sMasterAPIDNS" : {
+            "Value" : {
+                "Fn::Sub": "${apiDnsHostName}.${apiDnsDomainName}"
+            }
         }
         
 
